@@ -46,9 +46,14 @@ pff_find_and_install_pkgs <- function(folder.in,
 
   all.pkgs <- unlist(lapply(df.files$pkgs,
                             FUN = function(x) stringr::str_split(x, ' ; ')[[1]]))
-
+  
+  # Only keep a unique list of packages to make them install once
+  all.pkgs <- all.pkgs[!duplicated(all.pkgs)]
+  
+  # Remove NA
   all.pkgs <- all.pkgs[!is.na(all.pkgs)]
-
+  
+  
   cat('\nChecking and installing missing pkgs')
   l.out <- lapply(X = all.pkgs,
                   FUN = pff_check_install_pkgs,
